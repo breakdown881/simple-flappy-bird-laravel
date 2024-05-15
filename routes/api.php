@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/export-scores', [GameController::class, 'exportScores']);
+Route::get('/export-users', [GameController::class, 'exportUsers']);

@@ -1,9 +1,6 @@
 // public/js/game.js
 $(document).ready(function() {
-    if (!localStorage.getItem('player_name') || !localStorage.getItem('phone_number')) {
-        window.location.href = '/';
-    }
-
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
     var canvas = $('#canvas')[0];
     var context = canvas.getContext('2d');
     var bird = { x: 50, y: 150, width: 20, height: 20, gravity: 0.6, lift: -10, velocity: 0 };
@@ -78,9 +75,7 @@ $(document).ready(function() {
             url: '/scores',
             type: 'POST',
             data: JSON.stringify({
-                name: localStorage.getItem('player_name'),
-                phone_number: localStorage.getItem('phone_number'),
-                email: localStorage.getItem('email'),
+                _token: csrfToken,
                 score: score
             }),
             contentType: 'application/json',

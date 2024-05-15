@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Exports\GamesExport;
+use App\Exports\UsersExport;
 use App\Models\Game;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Auth;
 
 class GameController extends Controller
 {
@@ -15,9 +17,6 @@ class GameController extends Controller
     {
         try {
             $request->validate([
-                'name' => 'required|string|max:255',
-                'phone_number' => 'required|string|max:15',
-                'email' => 'string|max:255',
                 'score' => 'required|integer',
             ]);
 
@@ -26,9 +25,7 @@ class GameController extends Controller
 
             DB::beginTransaction();
             Game::create([
-                'name' => $request->name,
-                'phone_number' => $request->phone_number,
-                'email' => $request->email,
+                'user_id' => Auth::id(),
                 'score' => $request->score,
                 'won_prize' => $wonPrize,
                 'reward' => $reward,
@@ -42,6 +39,7 @@ class GameController extends Controller
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e);
         }
 
         return response()->json([
@@ -71,5 +69,10 @@ class GameController extends Controller
     public function exportScores(Request $request)
     {
         return Excel::download(new GamesExport, 'games.xlsx');
+    }
+
+    public function exportUsers(Request $request)
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
     }
 }

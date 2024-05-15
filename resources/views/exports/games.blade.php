@@ -15,9 +15,9 @@
     @foreach($games as $game)
         <tr>
             <th>{{ $game->id }}</th>
-            <td>{{ $game->name }}</td>
-            <td>{{ $game->phone_number }}</td>
-            <td>{{ $game->email }}</td>
+            <td>{{ $game->user->name }}</td>
+            <td>{{ $game->user->phone_number }}</td>
+            <td>{{ $game->user->email }}</td>
             <td>{{ $game->score }}</td>
             <td>{{ $game->won_prize ? 'Yes' : 'No' }}</td>
             <td>{{ $game->reward }}</td>
